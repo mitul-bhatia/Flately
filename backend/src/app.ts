@@ -57,6 +57,8 @@ app.use(
   }),
 );
 
+const redisClient = getRedisClient();
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -65,10 +67,12 @@ const limiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
-  store: new RedisStore({
-    sendCommand: (...args: string[]) => getRedisClient().call(args[0], ...args.slice(1)) as any,
-    prefix: 'rl:',
-  }),
+  ...(redisClient ? {
+    store: new RedisStore({
+      sendCommand: (...args: string[]) => redisClient.call(args[0], ...args.slice(1)) as any,
+      prefix: 'rl:',
+    })
+  } : {}),
 });
 
 const authLimiter = rateLimit({
@@ -76,10 +80,12 @@ const authLimiter = rateLimit({
   max: 10,
   standardHeaders: true,
   legacyHeaders: false,
-  store: new RedisStore({
-    sendCommand: (...args: string[]) => getRedisClient().call(args[0], ...args.slice(1)) as any,
-    prefix: 'rl_auth:',
-  }),
+  ...(redisClient ? {
+    store: new RedisStore({
+      sendCommand: (...args: string[]) => redisClient.call(args[0], ...args.slice(1)) as any,
+      prefix: 'rl_auth:',
+    })
+  } : {}),
   message: { error: 'TOO_MANY_REQUESTS', retryAfter: '15 minutes' },
 });
 

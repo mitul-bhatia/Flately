@@ -34,8 +34,12 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
 const pubClient = getRedisClient();
 const subClient = getRedisSubscriberClient();
 
-io.adapter(createAdapter(pubClient, subClient));
-console.log('[Socket.IO] Redis adapter enabled');
+if (pubClient && subClient) {
+  io.adapter(createAdapter(pubClient, subClient));
+  console.log('[Socket.IO] Redis adapter enabled');
+} else {
+  console.log('[Socket.IO] Memory adapter enabled (Redis disabled)');
+}
 
 io.use(socketAuthMiddleware);
 

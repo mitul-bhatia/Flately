@@ -3,7 +3,11 @@ import env from './env';
 
 let redisClient: Redis | null = null;
 
-export function getRedisClient(): Redis {
+export function getRedisClient(): Redis | null {
+  if (!env.REDIS_URL) {
+    return null;
+  }
+
   if (!redisClient) {
     redisClient = new Redis(env.REDIS_URL, {
       maxRetriesPerRequest: 3,
@@ -11,7 +15,7 @@ export function getRedisClient(): Redis {
       lazyConnect: false,
     });
 
-    redisClient.on('error', (err) => {
+    redisClient.on('error', (err: any) => {
       console.error('[Redis] Connection error:', err.message);
     });
 
@@ -22,6 +26,13 @@ export function getRedisClient(): Redis {
   return redisClient;
 }
 
-export function getRedisSubscriberClient(): Redis {
-  return getRedisClient().duplicate();
+export function getRedisSubscriberClient(): Redis | null {
+  const client = getRedisClient();
+  if (!client) return null;
+  
+  const subClient = client.duplicate();
+  subClient.on('error', (err: any) => {
+    console.error('[Redis Sub] Connection error:', err.message);
+  });
+  return subClient;
 }

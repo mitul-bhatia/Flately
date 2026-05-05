@@ -17,7 +17,7 @@ const envSchema = z.object({
   GOOGLE_OAUTH_CLIENT_ID: z.string().default(''),
   GOOGLE_OAUTH_CLIENT_SECRET: z.string().default(''),
   GOOGLE_OAUTH_CALLBACK_URL: z.string().default('http://localhost:4000/auth/google/callback'),
-  REDIS_URL: z.string().default('redis://localhost:6379'),
+  REDIS_URL: z.string().default(process.env.NODE_ENV === 'production' ? '' : 'redis://localhost:6379'),
 });
 
 const parsed = envSchema.safeParse(process.env);
