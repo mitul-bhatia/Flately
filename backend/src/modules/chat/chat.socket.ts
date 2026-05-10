@@ -5,11 +5,8 @@ import { AuthenticatedSocket } from '../../middlewares/socket-auth.middleware';
 
 const chatSocketEvents = {
   joinCanonical: 'joinRoom',
-  joinAlias: 'join',
   sendCanonical: 'sendMessage',
-  sendAlias: 'send_message',
   messageCanonical: 'message',
-  messageAlias: 'new_message',
 } as const;
 
 function safeHandler(
@@ -57,13 +54,10 @@ export default function registerChatSocket(
       };
 
       io.to(conversationId).emit(chatSocketEvents.messageCanonical, payload);
-      io.to(conversationId).emit(chatSocketEvents.messageAlias, payload);
     };
 
     socket.on(chatSocketEvents.joinCanonical, safeHandler(authSocket, joinConversation));
-    socket.on(chatSocketEvents.joinAlias, safeHandler(authSocket, joinConversation));
 
     socket.on(chatSocketEvents.sendCanonical, safeHandler(authSocket, handleSendMessage));
-    socket.on(chatSocketEvents.sendAlias, safeHandler(authSocket, handleSendMessage));
   });
 }
