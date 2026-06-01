@@ -4,6 +4,8 @@ import { useAuth } from '@/features/auth/AuthProvider'
 import { resolveAuthContinuationPath } from '@/features/auth/authContinuationResolver'
 import { formatAuthError, formatAuthErrorCode } from '@/features/auth/auth.error'
 import { ROUTES } from '@/app/routes'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -87,28 +89,28 @@ export function LoginPage() {
           <label htmlFor="login-email" className="mt-6 block text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
             Email
           </label>
-          <input
+          <Input
             id="login-email"
             type="email"
             required
             autoComplete="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="mt-2 w-full rounded-xl border border-neutral-border bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className="mt-2 h-12"
             placeholder="name@email.com"
           />
 
           <label htmlFor="login-password" className="mt-4 block text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
             Password
           </label>
-          <input
+          <Input
             id="login-password"
             type="password"
             required
             autoComplete="current-password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="mt-2 w-full rounded-xl border border-neutral-border bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className="mt-2 h-12"
             placeholder="Enter your password"
           />
 
@@ -118,13 +120,15 @@ export function LoginPage() {
             </div>
           ) : null}
 
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="lg"
+            className="mt-6 w-full"
             onClick={() => signInWithGoogle(source || undefined)}
-            className="mt-6 w-full rounded-xl border border-neutral-border bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
           >
             Continue with Google
-          </button>
+          </Button>
 
           <div className="mt-4 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-slate-400">
             <span className="h-px flex-1 bg-slate-200" />
@@ -132,13 +136,15 @@ export function LoginPage() {
             <span className="h-px flex-1 bg-slate-200" />
           </div>
 
-          <button
+          <Button
             type="submit"
+            size="lg"
+            className="mt-6 w-full"
             disabled={isLoading}
-            className="mt-6 w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark disabled:opacity-60"
+            isLoading={isLoading}
           >
-            {isLoading ? 'Signing in...' : 'Sign In'}
-          </button>
+            Sign In
+          </Button>
 
           <p className="mt-5 text-sm text-slate-600">
             New here?{' '}
