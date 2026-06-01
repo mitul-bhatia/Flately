@@ -6,10 +6,6 @@ function isBrowser(): boolean {
   return typeof window !== 'undefined'
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
-}
-
 export function persistUserMeta(user: { id: string; email: string; name: string | null; picture: string | null }): void {
   if (!isBrowser()) {
     return

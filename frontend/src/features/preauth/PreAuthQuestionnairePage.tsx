@@ -7,6 +7,8 @@ import {
   type PreAuthQuestionnaireDraft,
 } from '@/features/preauth/preauth.storage'
 import type { OnboardingFormData } from '@/types'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
 
 const INITIAL_DRAFT: PreAuthQuestionnaireDraft = {
   hasRoom: DEFAULT_FORM_DATA.hasRoom,
@@ -132,7 +134,7 @@ export function PreAuthQuestionnairePage() {
                   type="button"
                   onClick={() => update('hasRoom', true)}
                   className={[
-                    'rounded-xl border px-4 py-4 text-left',
+                    'rounded-xl border px-4 py-4 text-left transition-colors',
                     draft.hasRoom
                       ? 'border-primary bg-mint text-primary'
                       : 'border-neutral-border text-slate-700 hover:bg-slate-50',
@@ -145,7 +147,7 @@ export function PreAuthQuestionnairePage() {
                   type="button"
                   onClick={() => update('hasRoom', false)}
                   className={[
-                    'rounded-xl border px-4 py-4 text-left',
+                    'rounded-xl border px-4 py-4 text-left transition-colors',
                     !draft.hasRoom
                       ? 'border-primary bg-mint text-primary'
                       : 'border-neutral-border text-slate-700 hover:bg-slate-50',
@@ -158,11 +160,11 @@ export function PreAuthQuestionnairePage() {
 
               <label className="block text-sm">
                 <span className="font-medium text-slate-700">City</span>
-                <input
+                <Input
                   type="text"
                   value={draft.city}
                   onChange={(event) => update('city', event.target.value)}
-                  className="mt-2 w-full rounded-xl border border-neutral-border px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  className="mt-2 h-12 rounded-xl"
                   placeholder="Where are you searching?"
                 />
               </label>
@@ -173,22 +175,22 @@ export function PreAuthQuestionnairePage() {
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="block text-sm">
                 <span className="font-medium text-slate-700">Minimum budget</span>
-                <input
+                <Input
                   type="number"
                   min={0}
                   value={draft.minBudget}
                   onChange={(event) => update('minBudget', Number(event.target.value))}
-                  className="mt-2 w-full rounded-xl border border-neutral-border px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  className="mt-2 h-12 rounded-xl"
                 />
               </label>
               <label className="block text-sm">
                 <span className="font-medium text-slate-700">Maximum budget</span>
-                <input
+                <Input
                   type="number"
                   min={0}
                   value={draft.maxBudget}
                   onChange={(event) => update('maxBudget', Number(event.target.value))}
-                  className="mt-2 w-full rounded-xl border border-neutral-border px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  className="mt-2 h-12 rounded-xl"
                 />
               </label>
             </div>
@@ -219,7 +221,7 @@ export function PreAuthQuestionnairePage() {
                   max={5}
                   value={draft.cleanliness}
                   onChange={(event) => update('cleanliness', Number(event.target.value))}
-                  className="mt-2 w-full"
+                  className="mt-2 w-full accent-primary"
                 />
               </label>
 
@@ -231,7 +233,7 @@ export function PreAuthQuestionnairePage() {
                   max={5}
                   value={draft.socialLevel}
                   onChange={(event) => update('socialLevel', Number(event.target.value))}
-                  className="mt-2 w-full"
+                  className="mt-2 w-full accent-primary"
                 />
               </label>
 
@@ -263,22 +265,24 @@ export function PreAuthQuestionnairePage() {
                   >
                     <p className="text-sm font-medium text-slate-800">{index + 1}. {PRIORITY_LABELS[key]}</p>
                     <div className="flex gap-2">
-                      <button
+                      <Button
                         type="button"
+                        variant="outline"
+                        size="sm"
                         onClick={() => movePriority(index, -1)}
                         disabled={index === 0}
-                        className="rounded border border-neutral-border px-2 py-1 text-xs font-semibold disabled:opacity-40"
                       >
                         Up
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         type="button"
+                        variant="outline"
+                        size="sm"
                         onClick={() => movePriority(index, 1)}
                         disabled={index === draft.priorityOrder.length - 1}
-                        className="rounded border border-neutral-border px-2 py-1 text-xs font-semibold disabled:opacity-40"
                       >
                         Down
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -297,39 +301,37 @@ export function PreAuthQuestionnairePage() {
           ) : null}
 
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-border pt-4">
-            <button
+            <Button
               type="button"
+              variant="outline"
               onClick={goBack}
               disabled={step === 1}
-              className="rounded-xl border border-neutral-border px-4 py-2 text-sm font-semibold text-slate-700 disabled:opacity-40"
             >
               Back
-            </button>
+            </Button>
 
             {step < 4 ? (
-              <button
+              <Button
                 type="button"
                 onClick={goNext}
-                className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white"
               >
                 Continue
-              </button>
+              </Button>
             ) : (
-              <div className="flex gap-2">
-                <button
+              <div className="flex flex-wrap gap-2">
+                <Button
                   type="button"
                   onClick={() => handoff(ROUTES.signup)}
-                  className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white"
                 >
                   Continue to sign up
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={() => handoff(ROUTES.login)}
-                  className="rounded-xl border border-neutral-border bg-surface px-4 py-2 text-sm font-semibold text-slate-700"
                 >
                   I already have an account
-                </button>
+                </Button>
               </div>
             )}
           </div>

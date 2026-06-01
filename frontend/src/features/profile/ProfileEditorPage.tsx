@@ -12,6 +12,8 @@ import {
 import { toApiErrorMessage } from '@/services/api'
 import { getMyPreferences, saveMyPreferences } from '@/services/preferences.transport'
 import { getMyProfile, saveMyProfile } from '@/services/profile.transport'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
 
 type Tab = 'profile' | 'preferences'
 
@@ -402,18 +404,18 @@ export function ProfileEditorPage() {
 
           <label className="text-sm">
             <span className="font-medium text-slate-700">Name</span>
-            <input
+            <Input
               type="text"
               value={profileForm.name}
               onChange={(event) =>
                 setProfileForm((prev) => ({ ...prev, name: event.target.value }))
               }
-              className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2"
+              className="mt-1"
             />
           </label>
           <label className="text-sm">
             <span className="font-medium text-slate-700">Age</span>
-            <input
+            <Input
               type="number"
               min={18}
               max={99}
@@ -421,18 +423,18 @@ export function ProfileEditorPage() {
               onChange={(event) =>
                 setProfileForm((prev) => ({ ...prev, age: Number(event.target.value) }))
               }
-              className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2"
+              className="mt-1"
             />
           </label>
           <label className="text-sm">
             <span className="font-medium text-slate-700">City</span>
-            <input
+            <Input
               type="text"
               value={profileForm.city}
               onChange={(event) =>
                 setProfileForm((prev) => ({ ...prev, city: event.target.value }))
               }
-              className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2"
+              className="mt-1"
             />
           </label>
           <label className="text-sm">
@@ -459,7 +461,7 @@ export function ProfileEditorPage() {
               onChange={(event) =>
                 setProfileForm((prev) => ({ ...prev, bio: event.target.value }))
               }
-              className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2"
+              className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
             />
           </label>
           <label className="text-sm">
@@ -520,7 +522,7 @@ export function ProfileEditorPage() {
               onChange={(event) =>
                 setProfileForm((prev) => ({ ...prev, noiseLevel: Number(event.target.value) }))
               }
-              className="mt-2 w-full"
+              className="mt-2 w-full accent-primary"
             />
           </label>
           <label className="text-sm">
@@ -598,37 +600,37 @@ export function ProfileEditorPage() {
           </label>
           <label className="text-sm">
             <span className="font-medium text-slate-700">City</span>
-            <input
+            <Input
               type="text"
               value={preferenceForm.city}
               onChange={(event) =>
                 setPreferenceForm((prev) => ({ ...prev, city: event.target.value }))
               }
-              className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2"
+              className="mt-1"
             />
           </label>
           <label className="text-sm">
             <span className="font-medium text-slate-700">Minimum Budget</span>
-            <input
+            <Input
               type="number"
               min={0}
               value={preferenceForm.minBudget}
               onChange={(event) =>
                 setPreferenceForm((prev) => ({ ...prev, minBudget: Number(event.target.value) }))
               }
-              className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2"
+              className="mt-1"
             />
           </label>
           <label className="text-sm">
             <span className="font-medium text-slate-700">Maximum Budget</span>
-            <input
+            <Input
               type="number"
               min={0}
               value={preferenceForm.maxBudget}
               onChange={(event) =>
                 setPreferenceForm((prev) => ({ ...prev, maxBudget: Number(event.target.value) }))
               }
-              className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2"
+              className="mt-1"
             />
           </label>
           <label className="text-sm">
@@ -641,7 +643,7 @@ export function ProfileEditorPage() {
               onChange={(event) =>
                 setPreferenceForm((prev) => ({ ...prev, cleanliness: Number(event.target.value) }))
               }
-              className="mt-2 w-full"
+              className="mt-2 w-full accent-primary"
             />
           </label>
           <label className="text-sm">
@@ -654,7 +656,7 @@ export function ProfileEditorPage() {
               onChange={(event) =>
                 setPreferenceForm((prev) => ({ ...prev, sleepSchedule: Number(event.target.value) }))
               }
-              className="mt-2 w-full"
+              className="mt-2 w-full accent-primary"
             />
           </label>
           <label className="text-sm">
@@ -667,7 +669,7 @@ export function ProfileEditorPage() {
               onChange={(event) =>
                 setPreferenceForm((prev) => ({ ...prev, socialLevel: Number(event.target.value) }))
               }
-              className="mt-2 w-full"
+              className="mt-2 w-full accent-primary"
             />
           </label>
           <label className="text-sm">
@@ -714,7 +716,7 @@ export function ProfileEditorPage() {
             <div className="mt-3 grid gap-3 md:grid-cols-2">
               <label className="text-sm">
                 <span className="font-medium text-slate-700">Cleanliness</span>
-                <input
+                <Input
                   type="number"
                   min={0}
                   max={100}
@@ -725,12 +727,12 @@ export function ProfileEditorPage() {
                       weightCleanliness: Number(event.target.value),
                     }))
                   }
-                  className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2"
+                  className="mt-1"
                 />
               </label>
               <label className="text-sm">
                 <span className="font-medium text-slate-700">Sleep</span>
-                <input
+                <Input
                   type="number"
                   min={0}
                   max={100}
@@ -741,12 +743,12 @@ export function ProfileEditorPage() {
                       weightSleep: Number(event.target.value),
                     }))
                   }
-                  className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2"
+                  className="mt-1"
                 />
               </label>
               <label className="text-sm">
                 <span className="font-medium text-slate-700">Habits</span>
-                <input
+                <Input
                   type="number"
                   min={0}
                   max={100}
@@ -757,12 +759,12 @@ export function ProfileEditorPage() {
                       weightHabits: Number(event.target.value),
                     }))
                   }
-                  className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2"
+                  className="mt-1"
                 />
               </label>
               <label className="text-sm">
                 <span className="font-medium text-slate-700">Social</span>
-                <input
+                <Input
                   type="number"
                   min={0}
                   max={100}
@@ -773,7 +775,7 @@ export function ProfileEditorPage() {
                       weightSocial: Number(event.target.value),
                     }))
                   }
-                  className="mt-1 w-full rounded-md border border-neutral-border px-3 py-2"
+                  className="mt-1"
                 />
               </label>
             </div>
@@ -782,17 +784,18 @@ export function ProfileEditorPage() {
         </div>
       )}
 
-      <div>
-        <button
+      <div className="pt-2 border-t border-neutral-border mt-4">
+        <Button
           type="button"
           onClick={() => {
             void saveCurrentTab()
           }}
           disabled={saving || uploading}
-          className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+          isLoading={saving}
+          className="mt-4"
         >
-          {saving ? 'Saving...' : activeTab === 'profile' ? 'Save profile' : 'Save preferences'}
-        </button>
+          {activeTab === 'profile' ? 'Save profile' : 'Save preferences'}
+        </Button>
       </div>
     </section>
   )

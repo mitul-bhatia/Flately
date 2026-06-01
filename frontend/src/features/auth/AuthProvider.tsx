@@ -43,7 +43,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const dispatch = useAppDispatch()
-  const { status, accessToken, user } = useAppSelector((state) => state.auth)
+  const { status, accessToken } = useAppSelector((state) => state.auth)
 
   useEffect(() => {
     const persistedSession = readPersistedSession()
