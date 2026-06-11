@@ -462,7 +462,6 @@ const data = await apiRequest({
 // chat.socket.ts
 io.on('connection', (socket) => {
   socket.on('joinRoom', (conversationId) => socket.join(conversationId));
-  socket.on('join', (conversationId) => socket.join(conversationId)); // alias
   socket.on('sendMessage', async ({ conversationId, senderId, content }) => {
     const msg = await sendMessage(conversationId, senderId, content);
     const payload = {
@@ -472,18 +471,6 @@ io.on('connection', (socket) => {
       timestamp: msg.createdAt.toISOString(),
     };
     io.to(conversationId).emit('message', payload);
-    io.to(conversationId).emit('new_message', payload); // alias
-  });
-  socket.on('send_message', async ({ conversationId, senderId, content }) => {
-    const msg = await sendMessage(conversationId, senderId, content);
-    const payload = {
-      id: msg.id, senderId: msg.senderId,
-      content: msg.content,
-      createdAt: msg.createdAt.toISOString(),
-      timestamp: msg.createdAt.toISOString(),
-    };
-    io.to(conversationId).emit('message', payload);
-    io.to(conversationId).emit('new_message', payload); // alias
   });
 });
 ```
@@ -498,16 +485,15 @@ export const socket = io(runtimeConfig.socketUrl);
 socket.emit('joinRoom', conversationId);
 socket.emit('sendMessage', { conversationId, senderId, content });
 socket.on('message', (msg) => setMessages(prev => [...prev, msg]));
-socket.on('new_message', (msg) => setMessages(prev => [...prev, msg])); // alias
 ```
 
 ### Socket Event Contract
 
 | Direction | Event | Payload |
 |---|---|---|
-| Client → Server | `joinRoom` (canonical), `join` (alias) | `conversationId: string` |
-| Client → Server | `sendMessage` (canonical), `send_message` (alias) | `{ conversationId, senderId, content }` |
-| Server → Client | `message` (canonical), `new_message` (alias) | `{ id, senderId, content, createdAt, timestamp }` |
+| Client → Server | `joinRoom` | `conversationId: string` |
+| Client → Server | `sendMessage` | `{ conversationId, senderId, content }` |
+| Server → Client | `message` | `{ id, senderId, content, createdAt, timestamp }` |
 
 ---
 

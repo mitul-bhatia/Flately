@@ -491,11 +491,6 @@ class ChatService {
 |-------|---------|-------------|
 | `message` | `{id, senderId, content, createdAt, timestamp}` | New message broadcast |
 
-**Legacy Aliases** (backward compatibility):
-- `join` → `joinRoom`
-- `send_message` → `sendMessage`
-- `new_message` → `message`
-
 ### Socket Registration
 
 ```typescript

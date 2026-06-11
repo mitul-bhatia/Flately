@@ -388,7 +388,7 @@ Uses:
 - GET /matches/me (thread list)
 - GET /chat/:matchId (conversation bootstrap)
 - Socket joinRoom + sendMessage
-- Receives both message and new_message events for compatibility
+- Receives message events
 
 Behavior:
 - connection status badge: connected/reconnecting/connecting/disconnected

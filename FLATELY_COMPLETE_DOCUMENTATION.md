@@ -756,20 +756,20 @@ function ProtectedRoute({ children }) {
 
 ### Socket.io Setup
 
-#### Backend (`chat.socket.js`)
+#### Backend (`chat.socket.ts`)
 
 ```javascript
 function registerChatSocket(io) {
   io.on("connection", (socket) => {
     // Join conversation room
-    socket.on("join", (conversationId) => {
+    socket.on("joinRoom", (conversationId) => {
       socket.join(conversationId);
     });
 
     // Handle sending messages
-    socket.on("send_message", async ({ conversationId, senderId, content }) => {
+    socket.on("sendMessage", async ({ conversationId, senderId, content }) => {
       const msg = await chatService.sendMessage(conversationId, senderId, content);
-      io.to(conversationId).emit("new_message", msg);
+      io.to(conversationId).emit("message", msg);
     });
   });
 }
@@ -788,7 +788,7 @@ export const socket = io("http://localhost:4000");
 // Join conversation
 useEffect(() => {
   if (conversationId) {
-    socket.emit('join', conversationId);
+    socket.emit('joinRoom', conversationId);
   }
 }, [conversationId]);
 
@@ -798,13 +798,13 @@ useEffect(() => {
     setMessages(prev => [...prev, msg]);
   };
   
-  socket.on('new_message', handleNewMessage);
-  return () => socket.off('new_message', handleNewMessage);
+  socket.on('message', handleNewMessage);
+  return () => socket.off('message', handleNewMessage);
 }, []);
 
 // Send message
 const handleSend = () => {
-  socket.emit('send_message', {
+  socket.emit('sendMessage', {
     conversationId,
     senderId: user.sub,
     content: message

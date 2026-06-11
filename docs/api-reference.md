@@ -616,27 +616,14 @@ const socket = io("http://localhost:4000");
 
 | Event | Payload | Description |
 |---|---|---|
-| `joinRoom` | `conversationId: string` | Canonical event: join a conversation room |
-| `sendMessage` | `{ conversationId, senderId, content }` | Canonical event: send a message |
-
-Legacy aliases (still accepted):
-
-| Event | Alias Of |
-|---|---|
-| `join` | `joinRoom` |
-| `send_message` | `sendMessage` |
+| `joinRoom` | `conversationId: string` | Join a conversation room |
+| `sendMessage` | `{ conversationId, senderId, content }` | Send a message |
 
 ### Server → Client Events
 
 | Event | Payload | Description |
 |---|---|---|
-| `message` | `{ id, senderId, content, createdAt, timestamp }` | Canonical event: new message broadcast |
-
-Legacy alias (still emitted for backward compatibility):
-
-| Event | Alias Of |
-|---|---|
-| `new_message` | `message` |
+| `message` | `{ id, senderId, content, createdAt, timestamp }` | New message broadcast |
 
 Payload contract notes:
 - `createdAt` and `timestamp` are both ISO datetime strings.
@@ -648,9 +635,7 @@ Payload contract notes:
 Client A sends:
   socket.emit('sendMessage', { conversationId, senderId, content })
     → Server receives, persists to DB via prisma.message.create()
-    → Server broadcasts canonical: io.to(conversationId).emit('message', payload)
-    → Server also broadcasts alias: io.to(conversationId).emit('new_message', payload)
-    → Client B can receive either event during compatibility window
+    → Server broadcasts: io.to(conversationId).emit('message', payload)
 ```
 
 ---

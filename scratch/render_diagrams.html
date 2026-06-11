@@ -240,8 +240,8 @@ graph LR
 
     subgraph Chat
         UC19[Open Conversation\nGET /chat/:matchId]
-        UC20[Send Message\nsocket.emit send_message]
-        UC21[Receive Message\nsocket.on new_message]
+        UC20[Send Message\nsocket.emit sendMessage]
+        UC21[Receive Message\nsocket.on message]
     end
 
     Guest --> UC1
@@ -484,16 +484,16 @@ flowchart TD
     M --> N[prisma.profile.findUnique otherUserId include user]
     N --> O[Return conversation + messages + otherUser]
     O --> P[Render chat UI with message bubbles]
-    P --> Q[socket.emit join conversationId]
+    P --> Q[socket.emit joinRoom conversationId]
     Q --> R[Server: socket.join conversationId room]
 
     R --> S{User action?}
     S -->|Type + Send| T[Optimistic UI: append message immediately]
-    T --> U[socket.emit send_message\nconversationId · senderId · content]
+    T --> U[socket.emit sendMessage\nconversationId · senderId · content]
     U --> V[Server: sendMessage conversationId senderId content]
     V --> W[prisma.message.create]
-    W --> X[io.to conversationId .emit new_message\nid · senderId · content · timestamp]
-    X --> Y[Both clients receive new_message event]
+    W --> X[io.to conversationId .emit message\nid · senderId · content · timestamp]
+    X --> Y[Both clients receive message event]
     Y --> Z[Append to messages array in UI]
     Z --> S
 
@@ -649,18 +649,18 @@ sequenceDiagram
     CC->>DB: profile.findUnique(otherUserId, include: user)
     DB-->>CC: Other user profile
     CC-->>A: {conversation, messages[], otherUser}
-    A->>SIO: socket.emit("join", conversationId)
+    A->>SIO: socket.emit("joinRoom", conversationId)
     SIO->>SIO: socket.join(room: conversationId)
-    B->>SIO: socket.emit("join", conversationId)
+    B->>SIO: socket.emit("joinRoom", conversationId)
     SIO->>SIO: socket.join(room: conversationId)
     Note over A,B: Both users now in same Socket.IO room
     A->>A: Type message, optimistic UI append
-    A->>SIO: socket.emit("send_message",{conversationId,senderId,content})
+    A->>SIO: socket.emit("sendMessage",{conversationId,senderId,content})
     SIO->>CS: sendMessage(conversationId, senderId, content)
     CS->>DB: message.create({conversationId, senderId, content})
     DB-->>CS: Persisted Message
-    SIO->>A: io.to(conversationId).emit("new_message",{id,senderId,content,timestamp})
-    SIO->>B: io.to(conversationId).emit("new_message",{id,senderId,content,timestamp})
+    SIO->>A: io.to(conversationId).emit("message",{id,senderId,content,timestamp})
+    SIO->>B: io.to(conversationId).emit("message",{id,senderId,content,timestamp})
     B->>B: Append new message to UI
   </div>
 </div>
